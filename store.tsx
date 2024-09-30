@@ -65,13 +65,15 @@ const useDataStore = create((set) => ({
   startDate:null,
   endDate:null,
   value:[],
+  interest:[],
   progressValue:0,
   tripType:"",
   setDataValue: (v:any) => set({value: v}),
   setProgressValue: (val:any) => set({progressValue:val}),
   setStartDate: (date:any) => set({startDate:date}),
   setEndDate: (date:any) => set({endDate:date}),
-  setTripType : (type:any) => set({tripType:type})
+  setTripType : (type:any) => set({tripType:type}),
+  setInterests : (items:any) => set({interest:items})
 }),
 {
   name: 'entries-storage',
