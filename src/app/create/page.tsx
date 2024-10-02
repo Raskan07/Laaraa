@@ -13,9 +13,6 @@ import EntryTwoComponent from '@/components/create/EntryTwoComponent'
 
 function CreateTrip() {
   const [days,setDays] = useState<any|number>()
-  const [people,setPeople] = useState<any|string>()
-  const [budget,setBudget] = useState<any|string>()
-  const [progress,setProgress] =  useState<any|number>(0)
   // @ts-ignore
   const {value,progressValue,setProgressValue} = useGetPlaceStore()
 
@@ -44,26 +41,3 @@ function CreateTrip() {
 
 export default CreateTrip
 
-
-// <div className="flex flex-col items-center justify-center">
-//       <H1 className=''>Create Trip</H1>
-//       <div className='w-[400px] mt-[20px] flex flex-col'>
-        {/* palces  */}
-      {/* <GooglePlacesAutocomplete
-      apiKey="AIzaSyALeWJ7fL9Cu7DCm9mxmMJcIVGELjohwBc"
-      selectProps={{
-        value,
-        onChange:(e) => setValue(e),
-      }}
-    /> */}
-
-    {/* number of days */}
-    {/* <Input placeholder='Number Of Days' className='mt-[20px]' value={days} onChange={(e) => setDays(e.target.value)}  />
-    <Input placeholder='Number Of peoples' className='mt-[20px]' value={people} onChange={(e) => setPeople(e.target.value)}  />
-    <Input placeholder='Budget $' className='mt-[20px]' value={budget} onChange={(e) => setBudget(e.target.value)}  /> */}
-
-    {/* button for genearte  */}
-
-    {/* <Button className="mt-[20px]" onClick={() => onHandlePromt(promt)}>Generate</Button> */}
-    {/* </div>
-    </div> */}

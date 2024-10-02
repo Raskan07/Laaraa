@@ -10,12 +10,14 @@ import {
 } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import { useRouter } from 'next/navigation'
-import { useGetPlaceStore } from "../../../../store";
+import { useGetPlaceStore,useDataStore } from "../../../../store";
+import useOnHandleAI from '@/hooks/useOnHandleAI';
+
 
 
 
 function Interest() {
-  const data = [
+  const datas = [
     {
       category: "Cultural and Historical Attractions",
       items: [
@@ -144,9 +146,15 @@ function Interest() {
     }
   ];
 
+  const {setProgressValue,setInterests,value,startDate,endDate,interests,tripType} = useGetPlaceStore()
+  const {onGetData} = useDataStore()
+  const promt = `create a json file that suggest places and activity based on this information : place : ${value?.label} , trip type: ${tripType} , and i am interested in ${interests.map((item) => (item))}, create a trip plan from ${startDate} to ${endDate} days, each day must includes : image url for places , opening hours , contact information , rating  , tickets price , geo location coordinates`
   const [interest, setInterest] = useState([]);
   const router =  useRouter()
-  const {setProgressValue,setInterests} = useGetPlaceStore()
+
+
+  console.log(promt)
+
 
   const onHandleSelection = (name:any) => {
     setInterest((prevInterests) => {
@@ -162,9 +170,11 @@ function Interest() {
   const onHandleRoute =  () => {
     setInterests(interest)
     setProgressValue(100)
+    onGetData(promt)
     router.push("/trip-builder")
     
   }
+
 
 
 
@@ -176,7 +186,7 @@ function Interest() {
       </P_Normal>
 
       <div className="mt-[40px] w-full grid md:grid-cols-4 items-center">
-        {data.map((item, index) => (
+        {datas.map((item, index) => (
           <Popover key={index}>
             <PopoverTrigger asChild>
             <h2 className={`m-2 inline-block border border-1 p-3 px-[10px] rounded-full text-nn cursor-pointer ${item.items.some(subItem => interest.includes(subItem)) ? "bg-green-400" : ""}`}>
