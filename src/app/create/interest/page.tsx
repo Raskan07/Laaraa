@@ -10,8 +10,11 @@ import {
 } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import { useRouter } from 'next/navigation'
-import { useGetPlaceStore,useDataStore } from "../../../../store";
-import useOnHandleAI from '@/hooks/useOnHandleAI';
+import { useGetPlaceStore,useDataStore,useAuthStore } from "../../../../store";
+import { doc, setDoc } from "firebase/firestore"; 
+import { db } from '@/lib/firebase';
+
+
 
 
 
@@ -146,14 +149,22 @@ function Interest() {
     }
   ];
 
-  const {setProgressValue,setInterests,value,startDate,endDate,interests,tripType} = useGetPlaceStore()
-  const {onGetData} = useDataStore()
+  const {setProgressValue,setInterests,value,startDate,endDate,interests,tripType,progressValue} = useGetPlaceStore()
   const promt = `create a json file that suggest places and activity based on this information : place : ${value?.label} , trip type: ${tripType} , and i am interested in ${interests.map((item) => (item))}, create a trip plan from ${startDate} to ${endDate} days, each day must includes : image url for places , opening hours , contact information , rating  , tickets price , geo location coordinates`
   const [interest, setInterest] = useState([]);
   const router =  useRouter()
 
+  const [uploadLoading,setUploadLoading] = useState(false)
 
-  console.log(promt)
+  console.log("loading",uploadLoading)
+  // @ts-ignore
+  const {auth_data} = useAuthStore()
+  // @ts-ignore
+  const {onGetData,data} = useDataStore()
+  // @ts-ignore
+
+
+
 
 
   const onHandleSelection = (name:any) => {
@@ -167,11 +178,36 @@ function Interest() {
   };
 
 
-  const onHandleRoute =  () => {
+  const onHandleRoute = async () => {
+    setUploadLoading(true)
     setInterests(interest)
     setProgressValue(100)
     onGetData(promt)
-    router.push("/trip-builder")
+
+    const docId = Date.now().toString()
+
+    try {
+       await setDoc(doc(db, "AI_Trips",docId ), {
+        auth: auth_data, //array of data
+        ai_generates: data, //array of data
+        entries: {
+          trip_start_date:startDate,
+          trip_end_date:endDate,
+          placeData:value, //aray of data
+          interests:interests,
+          tripType:tripType
+        }
+      });
+      setUploadLoading(false)
+        router.push("/trip-builder")
+      
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+
+
+
+
     
   }
 

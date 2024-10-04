@@ -6,6 +6,15 @@ import {
     HarmCategory,
     HarmBlockThreshold,
   } from "@google/generative-ai";
+import axios from "axios";
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { auth } from "@/lib/firebase";
+
+
+
+
+const provider = new GoogleAuthProvider();
+
 
 
 const genAI = new GoogleGenerativeAI("AIzaSyBkN_dw2c36Pye-wVck7tnbZCN52IU_Spw");
@@ -97,4 +106,53 @@ const model = genAI.getGenerativeModel({
 },))
 
 
-export {useDataStore,useGetPlaceStore}
+
+const useAuthStore = create(persist((set) => ({
+  userSignIn:false,
+  isLogin:false ,
+  auth_data:[],
+  signOut: () => set({userSignIn:false,auth_data:null}) ,
+  onGetData : async (accessToken:{accessToken:string}) => {
+    set({isLogin:true})
+    try {
+      const response = await axios.get(
+        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: 'application/json',
+          },
+        }
+      );
+      console.log('User Info:', response.data);
+      if(response.data){
+        set({userSignIn:true})
+      }
+      set({isLogin:false,auth_data:response.data})
+    } catch (error) {
+      set({isLogin:false})
+      console.error('Error fetching user info:', error);
+    }
+
+  },
+  onAuth_firebase: async() => {
+    set({isLogin:true})
+    try{
+      const result = await signInWithPopup(auth, provider);
+      console.log(result.user);
+      set({isLogin:false,auth_data:result.user,userSignIn:true})
+
+    } catch (error){
+      set({isLogin:false})
+      console.error('Error fetching user info:', error);
+    }
+  },
+}),{
+  name: 'myAuth',
+  storage: createJSONStorage(() => localStorage),
+  version: 1
+}))
+
+
+
+export {useDataStore,useGetPlaceStore,useAuthStore}

@@ -9,10 +9,17 @@ import StickyNoteAnimation from "@/components/animations/StickyNoteAnimation";
 import Hero from "@/components/pages/Hero";
 import PreFooter from "@/components/ui/pre-footer";
 import Footer from "@/components/ui/footer";
+import { GoogleLogin,useGoogleLogin,useGoogleOneTapLogin } from '@react-oauth/google';
+
 
 
 export default function Home() {
   const router = useRouter()
+
+  useGoogleOneTapLogin({
+    onSuccess: credentialResponse => console.log("One Tap Success:", credentialResponse),
+    onError: () => console.log("One Tap Login Failed"),
+  });
   
   return (
     <div className="flex flex-col items-center mt-[50px]">
