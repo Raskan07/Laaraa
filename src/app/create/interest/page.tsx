@@ -1,23 +1,32 @@
-"use client"
-import React, { useState } from 'react';
-import H1 from '@/components/fonts/H1';
-import P_Normal from '@/components/fonts/P_Normal';
+"use client";
+import React, { useState } from "react";
+import H1 from "@/components/fonts/H1";
+import P_Normal from "@/components/fonts/P_Normal";
 import { AiOutlinePlus } from "react-icons/ai";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { Button } from "@/components/ui/button"
-import { useRouter } from 'next/navigation'
-import { useGetPlaceStore,useDataStore,useAuthStore } from "../../../../store";
-import { doc, setDoc } from "firebase/firestore"; 
-import { db } from '@/lib/firebase';
-
-
-
-
-
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import {
+  useGetPlaceStore,
+  useDataStore,
+  useAuthStore,
+} from "../../../../store";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 function Interest() {
   const datas = [
@@ -31,8 +40,8 @@ function Interest() {
         "Local festivals",
         "Traditional villages",
         "Palaces and royal residences",
-        "Archaeological sites"
-      ]
+        "Archaeological sites",
+      ],
     },
     {
       category: "Natural Attractions",
@@ -44,8 +53,8 @@ function Interest() {
         "Deserts",
         "Caves and caverns",
         "Forests and jungles",
-        "Waterfalls"
-      ]
+        "Waterfalls",
+      ],
     },
     {
       category: "Adventure and Outdoor Activities",
@@ -57,8 +66,8 @@ function Interest() {
         "Rock climbing",
         "Safari and wildlife tours",
         "Rafting, kayaking, and canoeing",
-        "Cycling and biking tours"
-      ]
+        "Cycling and biking tours",
+      ],
     },
     {
       category: "City Tours and Urban Exploration",
@@ -68,8 +77,8 @@ function Interest() {
         "Public markets",
         "Street food tours",
         "Nightlife",
-        "Architecture"
-      ]
+        "Architecture",
+      ],
     },
     {
       category: "Food and Culinary Experiences",
@@ -78,16 +87,16 @@ function Interest() {
         "Food festivals",
         "Cooking classes",
         "Wine tasting tours",
-        "Street food and night markets"
-      ]
+        "Street food and night markets",
+      ],
     },
     {
       category: "Religious and Spiritual Experiences",
       items: [
         "Pilgrimage sites",
         "Retreats and meditation",
-        "Temples and religious ceremonies"
-      ]
+        "Temples and religious ceremonies",
+      ],
     },
     {
       category: "Shopping and Souvenir Hunting",
@@ -95,8 +104,8 @@ function Interest() {
         "Shopping malls and districts",
         "Local handicrafts",
         "Souvenir shops",
-        "Flea markets"
-      ]
+        "Flea markets",
+      ],
     },
     {
       category: "Festivals and Events",
@@ -104,23 +113,16 @@ function Interest() {
         "Music festivals",
         "Cultural festivals",
         "Film festivals",
-        "Carnivals and parades"
-      ]
+        "Carnivals and parades",
+      ],
     },
     {
       category: "Cruises and Island Hopping",
-      items: [
-        "River or ocean cruises",
-        "Island hopping"
-      ]
+      items: ["River or ocean cruises", "Island hopping"],
     },
     {
       category: "Health and Wellness Tourism",
-      items: [
-        "Spa retreats",
-        "Hot springs",
-        "Yoga and meditation retreats"
-      ]
+      items: ["Spa retreats", "Hot springs", "Yoga and meditation retreats"],
     },
     {
       category: "Art and Entertainment",
@@ -128,46 +130,55 @@ function Interest() {
         "Theater and opera",
         "Art galleries and exhibitions",
         "Street performances",
-        "Film locations"
-      ]
+        "Film locations",
+      ],
     },
     {
       category: "Luxury Travel",
-      items: [
-        "High-end resorts",
-        "Private tours",
-        "Gourmet dining"
-      ]
+      items: ["High-end resorts", "Private tours", "Gourmet dining"],
     },
     {
       category: "Volunteer and Educational Tourism",
-      items: [
-        "Conservation projects",
-        "Community volunteering",
-        "Study tours"
-      ]
-    }
+      items: ["Conservation projects", "Community volunteering", "Study tours"],
+    },
   ];
 
-  const {setProgressValue,setInterests,value,startDate,endDate,interests,tripType,progressValue} = useGetPlaceStore()
-  const promt = `create a json file that suggest places and activity based on this information : place : ${value?.label} , trip type: ${tripType} , and i am interested in ${interests.map((item) => (item))}, create a trip plan from ${startDate} to ${endDate} days, each day must includes : image url for places , opening hours , contact information , rating  , tickets price , geo location coordinates`
+  const {
+    setProgressValue,
+    setInterests,
+    value,
+    startDate,
+    endDate,
+    interests,
+    tripType,
+    progressValue,
+  } = useGetPlaceStore();
+  const promt = `create a json file that suggest places and activity based on this information : place : ${
+    value?.label
+  } write the small review about the place ${value?.label} and list down the wheather details about the place , trip type: ${tripType} , and i am interested in ${interests.map(
+    (item) => item
+  )}, create a trip plan from ${startDate} to ${endDate} days, each day must includes : image url for places , opening hours , contact information , rating  , tickets price , geo location coordinates create a separate array , name it as hotels in the location , thats must includes hotel name, geo loaction ,images , rating ,descrption about hotel , and price as well  `;
   const [interest, setInterest] = useState([]);
-  const router =  useRouter()
+  const router = useRouter();
 
-  const [uploadLoading,setUploadLoading] = useState(false)
+  const [uploadLoading, setUploadLoading] = useState(false);
 
-  console.log("loading",uploadLoading)
+  console.log("loading", uploadLoading);
   // @ts-ignore
-  const {auth_data} = useAuthStore()
+  const { auth_data } = useAuthStore();
   // @ts-ignore
-  const {onGetData,data} = useDataStore()
+  const { onGetData, data, loading } = useDataStore();
   // @ts-ignore
 
+  const GeneratePromt = () => {
+    setUploadLoading(true);
+    setInterests(interest); // Assuming `interest` is properly initialized and managed
+    setProgressValue(100);
+    onGetData(promt);
+    setUploadLoading(false);
+  };
 
-
-
-
-  const onHandleSelection = (name:any) => {
+  const onHandleSelection = (name: any) => {
     setInterest((prevInterests) => {
       // Avoid duplicates
       if (!prevInterests.includes(name)) {
@@ -177,42 +188,43 @@ function Interest() {
     });
   };
 
-
   const onHandleRoute = async () => {
-    setUploadLoading(true)
-    setInterests(interest)
-    setProgressValue(100)
-    onGetData(promt)
+    const docId = Date.now().toString();
 
-    const docId = Date.now().toString()
+    // Ensure that 'data' exists and is not empty
+    if (data) {
+      try {
+        await setDoc(doc(db, "AI_Trips", docId), {
+          auth: auth_data, // array of data
+          ai_generates: data, // array of data
+          entries: {
+            trip_start_date: startDate,
+            trip_end_date: endDate,
+            placeData: value, // array of data
+            interests: interests,
+            tripType: tripType,
+          },
+        });
 
-    try {
-       await setDoc(doc(db, "AI_Trips",docId ), {
-        auth: auth_data, //array of data
-        ai_generates: data, //array of data
-        entries: {
-          trip_start_date:startDate,
-          trip_end_date:endDate,
-          placeData:value, //aray of data
-          interests:interests,
-          tripType:tripType
-        }
-      });
-      setUploadLoading(false)
-        router.push("/trip-builder")
-      
-    } catch (e) {
-      console.error("Error adding document: ", e);
+        setUploadLoading(false);
+        router.push(`/trip-builder/${docId}`);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+        setUploadLoading(false); // Ensure the loading stops on error
+      }
+
+      const GeneratePromt = () => {
+        setUploadLoading(true);
+        setInterests(interest); // Assuming `interest` is properly initialized and managed
+        setProgressValue(100);
+        onGetData(promt);
+        setUploadLoading(false);
+      };
+    } else {
+      console.error("Data is missing or empty, cannot proceed.");
+      setUploadLoading(false); // Stop loading if data is missing
     }
-
-
-
-
-    
-  }
-
-
-
+  };
 
   return (
     <div className="mt-[60px] w-full text-center justify-center flex flex-col items-center">
@@ -225,15 +237,25 @@ function Interest() {
         {datas.map((item, index) => (
           <Popover key={index}>
             <PopoverTrigger asChild>
-            <h2 className={`m-2 inline-block border border-1 p-3 px-[10px] rounded-full text-nn cursor-pointer ${item.items.some(subItem => interest.includes(subItem)) ? "bg-green-400" : ""}`}>
+              <h2
+                className={`m-2 inline-block border border-1 p-3 px-[10px] rounded-full text-nn cursor-pointer ${
+                  item.items.some((subItem) => interest.includes(subItem))
+                    ? "bg-green-400"
+                    : ""
+                }`}
+              >
                 {item?.category}
               </h2>
             </PopoverTrigger>
             <PopoverContent className="">
-              {item?.items.map((subItem:any, subIndex) => (
+              {item?.items.map((subItem: any, subIndex) => (
                 <div
                   key={subIndex}
-                  className={`p-2 cursor-pointer ${interest.includes(subItem) ? "bg-green-300 rounded-full my-1" : ""} `}
+                  className={`p-2 cursor-pointer ${
+                    interest.includes(subItem)
+                      ? "bg-green-300 rounded-full my-1"
+                      : ""
+                  } `}
                   onClick={() => onHandleSelection(subItem)}
                 >
                   {subItem}
@@ -249,15 +271,52 @@ function Interest() {
         </div>
       </div>
 
-
       <div className="w-full flex flex-row items-end  justify-end mt-[60px] mb-[20px]">
-        <Button  onClick={onHandleRoute}  className="px-10 py-[20px] rounded-full" disabled={!interest} >
-          Next
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              onClick={GeneratePromt}
+              className="px-10 py-[20px] rounded-full"
+              disabled={!interest && uploadLoading}
+            >
+              {uploadLoading ? "Generating..." : "Next"}
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]  w-[90%] rounded-md">
+            <div className="flex flex-col items-center justify-center">
+              {/* logo */}
+              <div className="flex flex-row items-center justify-start ">
+                <img src={"/logo1.png"} className="w-[100px] " />
+              </div>
+
+              <h2 className="font-anton text-[1.5rem] mt-[15px]">
+                {loading ? "Hold a Moment" : "Thank you for patience"}
+              </h2>
+              {/* description */}
+              <p className="text-md text-gray-600 text-center font-nn w-[80%]">
+                {loading ? "loading.... we are working on it" : "done"}
+              </p>
+              {/* sign In Button */}
+
+              <button
+                className="flex flex-row items-center md:mt-[40px]   mt-[15px] px-[25px] p-2 md:w-[80%] gap-2 justify-center border border-1 rounded-full shadow-sm  hover:bg-gray-50"
+                disabled={loading}
+                onClick={onHandleRoute}
+              >
+                {!loading ? (
+                  "submit"
+                ) : (
+                  <p className="flex flex-row gap-2 items-center">
+                    {" "}
+                    Generating{" "}
+                    <AiOutlineLoading3Quarters className="text-gray-700 animate-spin" />{" "}
+                  </p>
+                )}
+              </button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
-
-
-      
     </div>
   );
 }
