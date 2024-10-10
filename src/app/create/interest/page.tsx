@@ -153,11 +153,22 @@ function Interest() {
     tripType,
     progressValue,
   } = useGetPlaceStore();
-  const promt = `create a json file that suggest places and activity based on this information : place : ${
-    value?.label
-  } write the small review about the place ${value?.label} and list down the wheather details about the place , trip type: ${tripType} , and i am interested in ${interests.map(
-    (item) => item
-  )}, create a trip plan from ${startDate} to ${endDate} days, each day must includes : image url for places , opening hours , contact information , rating  , tickets price , geo location coordinates create a separate array , name it as hotels in the location , thats must includes hotel name, geo loaction ,images , rating ,descrption about hotel , and price as well  `;
+  
+
+  const promt2 = `create a JSON file . that has 3 separates arrays of items and name of place  that should be string and description about the place , first hotels that must contain : {name of the hotel, description, imgUrl, rating, fees,opening hours , geo coords:{lat,lang} , contact information, tickets } , second item is activity , create a trip plan based on this information : ${value?.label}, ${tripType}, duration of trip starts ${startDate} to ${endDate} , my interests in ${interests.map((item) => item)} the activity array seems should be : trip_plan : [
+{
+day:"oct 11 2024",
+activites : [{
+place name, address of place , contact , rating , geo coords , description , what to do , ticket fees , opening hours , images of place ,
+}]
+}
+] and finally create weather array , that has all weather information about the place and day
+so all looks like : {
+place:"",
+description:"",
+hotels:[],
+trip_plan:[],
+weather:[]`;
   const [interest, setInterest] = useState([]);
   const router = useRouter();
 
@@ -174,7 +185,7 @@ function Interest() {
     setUploadLoading(true);
     setInterests(interest); // Assuming `interest` is properly initialized and managed
     setProgressValue(100);
-    onGetData(promt);
+    onGetData(promt2);
     setUploadLoading(false);
   };
 

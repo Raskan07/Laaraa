@@ -9,23 +9,40 @@ const config: Config = {
   ],
   theme: {
   	extend: {
-		fontFamily: {
-			nn: ["Ovo", "sans-serif"],
-			noraml:["Open Sans", "sans-serif"],
-			anton:["Anton", "sans-serif"],
-			roboto:["Roboto"]
-		  },
-		  animation: {
-			scroll:
-			  "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
-		  },
-		  keyframes: {
-			scroll: {
-			  to: {
-				transform: "translate(calc(-50% - 0.5rem))",
-			  },
-			},
-		  },
+  		fontFamily: {
+  			nn: ["Ovo", "sans-serif"],
+  			noraml: ["Open Sans", "sans-serif"],
+  			anton: ["Anton", "sans-serif"],
+  			roboto: ["Roboto"]
+  		},
+  		animation: {
+  			scroll: 'scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite',
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
+  		},
+  		keyframes: {
+  			scroll: {
+  				to: {
+  					transform: 'translate(calc(-50% - 0.5rem))'
+  				}
+  			},
+  			'accordion-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-accordion-content-height)'
+  				}
+  			},
+  			'accordion-up': {
+  				from: {
+  					height: 'var(--radix-accordion-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
+  			}
+  		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
