@@ -151,7 +151,6 @@ function Interest() {
     endDate,
     interests,
     tripType,
-    progressValue,
   } = useGetPlaceStore();
   
 
@@ -159,7 +158,16 @@ function Interest() {
 {
 day:"oct 11 2024",
 activites : [{
-place name, address of place , contact , rating , geo coords , description , what to do , ticket fees , opening hours , images of place ,
+placeName: "string", 
+address: "string", 
+contact: "string", 
+rating: "number", 
+geoCoords: { lat: "number", lang: "number" }, 
+description: "string", 
+whatToDo: "string", 
+ticketFees: "number", 
+openingHours: "string", 
+images: ["string", "string"] 
 }]
 }
 ] and finally create weather array , that has all weather information about the place and day
