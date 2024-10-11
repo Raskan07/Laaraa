@@ -7,7 +7,7 @@ import {
     HarmBlockThreshold,
   } from "@google/generative-ai";
 import axios from "axios";
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider,signInWithRedirect } from 'firebase/auth';
 import { auth } from "@/lib/firebase";
 
 
@@ -138,7 +138,7 @@ const useAuthStore = create(persist((set) => ({
   onAuth_firebase: async() => {
     set({isLogin:true})
     try{
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithRedirect(auth, provider);
       console.log(result.user);
       set({isLogin:false,auth_data:result.user,userSignIn:true})
 
