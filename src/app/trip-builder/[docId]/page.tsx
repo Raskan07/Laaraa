@@ -16,6 +16,8 @@ import { timeLineData } from "@/data";
 import { Timeline } from "@/components/ui/timeline";
 import { CiClock2 } from "react-icons/ci";
 import Map from "@/lib/map";
+import axios from 'axios';
+import { GetPlaceDetails } from "@/lib/GloabalAPI";
 
 
 
@@ -39,12 +41,21 @@ const Trips = () => {
     }
   };
 
+  const onGetImage = () => {
+    GetPlaceDetails("beruwala,gem market").then(res => {
+      console.log("respose",res.data?.result?.results[0]?.photos[0]?.photo_reference)
+      const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${res.data?.result?.results[0]?.photos[0]?.photo_reference}&key=AIzaSyALeWJ7fL9Cu7DCm9mxmMJcIVGELjohwBc`
+      console.log("photoUrl",photoUrl)
+    })
+  }
+
   useEffect(() => {
-    onGetInfo();
+    onGetInfo()
+    onGetImage()
   }, []);
 
   return (
-    <div className="flex flex-col  ">
+    <div className="flex flex-col  "  >
       {/* header Image */}
       <div className="w-full flex flex-col items-center">
         <img

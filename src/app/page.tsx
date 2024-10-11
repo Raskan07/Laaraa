@@ -10,6 +10,8 @@ import Hero from "@/components/pages/Hero";
 import PreFooter from "@/components/ui/pre-footer";
 import Footer from "@/components/ui/footer";
 import { GoogleLogin,useGoogleLogin,useGoogleOneTapLogin } from '@react-oauth/google';
+import useGloabalAPI from "@/lib/GloabalAPI";
+import { useEffect } from "react";
 
 
 
@@ -20,7 +22,12 @@ export default function Home() {
     onSuccess: credentialResponse => console.log("One Tap Success:", credentialResponse),
     onError: () => console.log("One Tap Login Failed"),
   });
-  
+
+
+
+
+
+
   return (
     <div className="flex flex-col items-center mt-[50px]">
       <h1 className="font-anton md:text-[4.5rem] text-[2.5rem]  text-center text-[#212121]">Your Next Journey, Optimized</h1>
