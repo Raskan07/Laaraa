@@ -138,7 +138,7 @@ const useAuthStore = create(persist((set) => ({
   onAuth_firebase: async() => {
     set({isLogin:true})
     try{
-      const result = await signInWithRedirect(auth, provider);
+      const result = await signInWithPopup(auth, provider);
       console.log(result.user);
       set({isLogin:false,auth_data:result.user,userSignIn:true})
 
