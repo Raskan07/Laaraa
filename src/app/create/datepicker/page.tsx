@@ -1,4 +1,3 @@
-import React from 'react'
 import EntryTwoComponent from '@/components/create/EntryTwoComponent'
 
 

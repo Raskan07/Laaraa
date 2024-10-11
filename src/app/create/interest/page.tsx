@@ -154,6 +154,7 @@ function Interest() {
   } = useGetPlaceStore();
   
 
+  // @ts-ignore
   const promt2 = `create a JSON file . that has 3 separates arrays of items and name of place  that should be string and description about the place , first hotels that must contain : {name of the hotel, description, imgUrl, rating, fees,opening hours , geo coords:{lat,lang} , contact information, tickets } , second item is activity , create a trip plan based on this information : ${value?.label}, ${tripType}, duration of trip starts ${startDate} to ${endDate} , my interests in ${interests.map((item) => item)} the activity array seems should be : trip_plan : [
 {
 day:"oct 11 2024",
@@ -198,7 +199,7 @@ weather:[]`;
   };
 
   const onHandleSelection = (name: any) => {
-    setInterest((prevInterests) => {
+    setInterest((prevInterests:any) => {
       // Avoid duplicates
       if (!prevInterests.includes(name)) {
         return [...prevInterests, name];
@@ -236,7 +237,7 @@ weather:[]`;
         setUploadLoading(true);
         setInterests(interest); // Assuming `interest` is properly initialized and managed
         setProgressValue(100);
-        onGetData(promt);
+        onGetData(promt2);
         setUploadLoading(false);
       };
     } else {
@@ -267,13 +268,12 @@ weather:[]`;
               </h2>
             </PopoverTrigger>
             <PopoverContent className="">
-              {item?.items.map((subItem: any, subIndex) => (
+              
+              {item?.items.map((subItem:string, subIndex:number) => (
                 <div
                   key={subIndex}
                   className={`p-2 cursor-pointer ${
-                    interest.includes(subItem)
-                      ? "bg-green-300 rounded-full my-1"
-                      : ""
+                    interest.includes(subItem) ? "bg-green-300 rounded-full my-1": ""
                   } `}
                   onClick={() => onHandleSelection(subItem)}
                 >
