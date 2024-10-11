@@ -27,6 +27,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { MultiStepLoader as Loader } from "@/components/ui/multi-step-loader";
+
 
 function Interest() {
   const datas = [
@@ -143,6 +145,34 @@ function Interest() {
     },
   ];
 
+
+  const loadingStates = [
+    {
+      text: "Buying a condo",
+    },
+    {
+      text: "Travelling in a flight",
+    },
+    {
+      text: "Meeting Tyler Durden",
+    },
+    {
+      text: "He makes soap",
+    },
+    {
+      text: "We goto a bar",
+    },
+    {
+      text: "Start a fight",
+    },
+    {
+      text: "We like it",
+    },
+    {
+      text: "Welcome to F**** C***",
+    },
+  ];
+
   const {
     setProgressValue,
     setInterests,
@@ -176,78 +206,77 @@ so all looks like : {
 place:"",
 description:"",
 hotels:[],
-trip_plan:[],
-weather:[]`;
+trip_plan:[],weather:[]`;
+
+
   const [interest, setInterest] = useState([]);
   const router = useRouter();
 
   const [uploadLoading, setUploadLoading] = useState(false);
 
-  console.log("loading", uploadLoading);
+  console.log("loading for query", uploadLoading);
+
+
+
   // @ts-ignore
   const { auth_data } = useAuthStore();
   // @ts-ignore
   const { onGetData, data, loading } = useDataStore();
   // @ts-ignore
 
-  const GeneratePromt = () => {
-    setUploadLoading(true);
-    setInterests(interest); // Assuming `interest` is properly initialized and managed
-    setProgressValue(100);
-    onGetData(promt2);
-    setUploadLoading(false);
-  };
 
-  const onHandleSelection = (name: any) => {
-    setInterest((prevInterests:any) => {
-      // Avoid duplicates
+  const onHandleSelection = (name) => {
+    setInterest((prevInterests) => {
       if (!prevInterests.includes(name)) {
         return [...prevInterests, name];
       }
-      return prevInterests;
+      return prevInterests.filter(item => item !== name); // Toggle selection
     });
   };
 
+  // Generate the prompt and trigger the data fetch
+  const GeneratePromt = () => {
+    setInterests(interest);
+    setProgressValue(100);
+    onGetData(promt2)
+      .finally(() => {
+        setUploadLoading(false);
+      });
+  };
+
+  // Handle route navigation and Firestore data submission
   const onHandleRoute = async () => {
     const docId = Date.now().toString();
 
-    // Ensure that 'data' exists and is not empty
-    if (data) {
-      try {
-        await setDoc(doc(db, "AI_Trips", docId), {
-          auth: auth_data, // array of data
-          ai_generates: data, // array of data
-          entries: {
-            trip_start_date: startDate,
-            trip_end_date: endDate,
-            placeData: value, // array of data
-            interests: interests,
-            tripType: tripType,
-          },
-        });
-
-        setUploadLoading(false);
-        router.push(`/trip-builder/${docId}`);
-      } catch (e) {
-        console.error("Error adding document: ", e);
-        setUploadLoading(false); // Ensure the loading stops on error
-      }
-
-      const GeneratePromt = () => {
-        setUploadLoading(true);
-        setInterests(interest); // Assuming `interest` is properly initialized and managed
-        setProgressValue(100);
-        onGetData(promt2);
-        setUploadLoading(false);
-      };
-    } else {
+    if (!data) {
       console.error("Data is missing or empty, cannot proceed.");
-      setUploadLoading(false); // Stop loading if data is missing
+      return;
+    }
+
+    setUploadLoading(true);
+    try {
+      await setDoc(doc(db, "AI_Trips", docId), {
+        auth: auth_data,
+        ai_generates: data,
+        entries: {
+          trip_start_date: startDate,
+          trip_end_date: endDate,
+          placeData: value,
+          interests: interests,
+          tripType: tripType,
+        },
+      });
+      router.push(`/trip-builder/${docId}`);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    } finally {
+      setUploadLoading(false);
+      setProgressValue(0)
     }
   };
-
   return (
     <div className="mt-[60px] w-full text-center justify-center flex flex-col items-center">
+      <Loader loadingStates={loadingStates} loading={uploadLoading} duration={2000} />
       <H1 className="">Tell us. what you're interested in</H1>
       <P_Normal className="text-gray-600 text-center">
         Select that all apply
