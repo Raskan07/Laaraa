@@ -39,8 +39,8 @@ export function SkeletonDemo() {
     return (
       <div className="flex flex-col gap-2 ">
         <Skeleton className="h-[10vh] w-[70%] rounded-md" />
-        <Skeleton className="h-[5vh] w-[40%] rounded-md" />
-        <Skeleton className="h-[5vh] w-[30%] rounded-md" />
+        <Skeleton className="md:h-[5vh] h-[7px] w-[40%] rounded-md" />
+        <Skeleton className="md:h-[5vh] h-[4px] w-[30%] rounded-md" />
       </div>
     )
   }
