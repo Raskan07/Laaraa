@@ -14,3 +14,6 @@ export async function GET(request: NextRequest) {
   // Your API logic here
   return NextResponse.json({ message: 'Hello from your API route!',result });
 }
+
+
+//https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJPT-U4zwu4joRJmD2KIumxdM&key=AIzaSyALeWJ7fL9Cu7DCm9mxmMJcIVGELjohwBc
