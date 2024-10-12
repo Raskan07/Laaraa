@@ -28,7 +28,9 @@ const Trips = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
   const [imgaeURL,setImageURL] = useState<string>()
-  const [imageLoading,setImageLoaing] =  useState(true)
+  const [imageLoading,setImageLoaing] =  useState(false)
+
+  console.log("imageLoading",imageLoading)
 
   const onGetInfo = async () => {
     setLoading(true);
@@ -45,21 +47,35 @@ const Trips = () => {
     }
   };
 
+
   const onGetImage = () => {
-    setImageLoaing(true)
-    GetPlaceDetails(`${data?.entries?.placeData?.label}`).then(res => {
-      console.log("respose",res.data?.result?.results[0]?.photos[0]?.photo_reference)
-      const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${res.data?.result?.results[0]?.photos[0]?.photo_reference}&key=AIzaSyALeWJ7fL9Cu7DCm9mxmMJcIVGELjohwBc`
+
+    if(!data?.entries?.placeData?.label || data?.entries?.placeData?.label == "undefined"){
+      console.log("Label is undefined, skipping image fetch.");
+      return;
+    }
+
+    setImageLoaing(true);
+
+
+    GetPlaceDetails(data?.entries?.placeData?.label).then(res => {
+      console.log("respose",res.data?.result?.results[0])
+      const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&maxheight=800&photo_reference=${res.data?.result?.results[0]?.photos[0]?.photo_reference}&key=AIzaSyALeWJ7fL9Cu7DCm9mxmMJcIVGELjohwBc`
       console.log("photoUrl",photoUrl)
       setImageURL(photoUrl)
       setImageLoaing(false)
     })
   }
 
+  
+
   useEffect(() => {
     onGetInfo()
-    onGetImage()
-  }, []);
+
+    data &&  onGetImage()
+  }, [data?.entries?.placeData?.label]);
+
+  console.log("label",data?.entries?.placeData?.label)
 
   return (
     <div className="flex flex-col  "  >
