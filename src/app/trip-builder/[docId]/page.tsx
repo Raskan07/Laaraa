@@ -18,6 +18,8 @@ import { CiClock2 } from "react-icons/ci";
 import Map from "@/lib/map";
 import axios from 'axios';
 import { GetPlaceDetails } from "@/lib/GloabalAPI";
+import { Skeleton } from "@/components/ui/skeleton"
+
 
 
 
@@ -25,6 +27,8 @@ const Trips = () => {
   const { docId } = useParams();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
+  const [imgaeURL,setImageURL] = useState<string>()
+  const [imageLoading,setImageLoaing] =  useState(true)
 
   const onGetInfo = async () => {
     setLoading(true);
@@ -42,10 +46,13 @@ const Trips = () => {
   };
 
   const onGetImage = () => {
-    GetPlaceDetails("beruwala,gem market").then(res => {
+    setImageLoaing(true)
+    GetPlaceDetails(`${data?.entries?.placeData?.label}`).then(res => {
       console.log("respose",res.data?.result?.results[0]?.photos[0]?.photo_reference)
       const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${res.data?.result?.results[0]?.photos[0]?.photo_reference}&key=AIzaSyALeWJ7fL9Cu7DCm9mxmMJcIVGELjohwBc`
       console.log("photoUrl",photoUrl)
+      setImageURL(photoUrl)
+      setImageLoaing(false)
     })
   }
 
@@ -58,9 +65,9 @@ const Trips = () => {
     <div className="flex flex-col  "  >
       {/* header Image */}
       <div className="w-full flex flex-col items-center">
-        <img
-          src="https://nyc.eu/wp-content/uploads/2015/07/New_York_City-scaled.jpg"
-          className="w-full md:h-[60%] h-auto rounded-md"
+          <img
+          src={imgaeURL}
+          className="w-full md:h-[100vh] object-cover  rounded-md"
           alt=""
         />
         <div className="w-full flex flex-col items-start my-[32px]">
