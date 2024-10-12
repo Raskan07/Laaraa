@@ -29,7 +29,7 @@ export function SkeletonDemo() {
   export function SkeletonImage() {
     return (
       <div className="flex flex-col ">
-        <Skeleton className="h-[75vh] w-[100%] rounded-md" />
+        <Skeleton className="md:h-[75vh] h-[50vh] w-[100%] rounded-md" />
       </div>
     )
   }
