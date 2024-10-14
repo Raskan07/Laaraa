@@ -47,10 +47,10 @@ function PrimaryCard({ isPrimaryCard, data }: Props) {
   return (
     <Sheet>
       <SheetTrigger>
-        <div className="w-full md:w-[270px]">
+        <div className="w-[90vw] md:w-[270px] ">
           {/* image */}
           <div
-            className="w-full md:w-[270] h-[220px] hover:opacity-90 bg-gray-100 object-cover no-repeat  rounded-md"
+            className="w-full md:w-[270] h-[220px] hover:opacity-90 bg-gray-100  no-repeat  rounded-md"
             style={{
               backgroundImage: `url('${imageURL}')`,
             }}
@@ -73,22 +73,20 @@ function PrimaryCard({ isPrimaryCard, data }: Props) {
 
           {/* footer */}
           {isPrimaryCard && (
-            <div className="mt-3 p-1">
+            <div className="mt-3">
               {/* title */}
               <p className="w-[98%] text-[17px] font-bold font-roboto text-start capitalize leading-[1.2]">
                 {data?.placeName}
               </p>
-              <p className="text-[15px] text-gray-700 font-roboto ">
-                {data?.description?.slice(0, 30)}...{" "}
+              <p className="text-[15px] text-start text-gray-700 font-roboto ">
+                {data?.description?.slice(0, 30)}...
               </p>
               {/* rating */}
-              <div className="flex flex-row gap-4 items-center">
+              <div className="flex flex-row items-center gap-2">
                 <IoIosStar className="text-yellow-400" />
-                <p className="text-md w-[70%] font-roboto">
+                <p className="text-sm font-roboto text-gray-700">
                   {data?.rating} rating
                 </p>
-
-                <FaArrowRightLong className="" />
               </div>
               {/* contact us */}
             </div>
@@ -105,16 +103,16 @@ function PrimaryCard({ isPrimaryCard, data }: Props) {
           <div className="mt-[30px]">
             {/* title and rating */}
             <div className="mt-[20px]">
-              <h2 className="font-anton text-2xl w-[90%]">Crabing Factory</h2>
+              <h2 className="font-anton text-2xl w-[90%] text-start">Crabing Factory</h2>
               <div className="flex flex-row gap-2 items-center">
                 <IoIosStar className="text-yellow-400" />{" "}
-                <p className="font-roboto font-[400]">4.5 rating</p>
+                <p className="font-roboto font-[400] text-start">4.5 rating</p>
               </div>
 
               {/* overview */}
               <div className="mt-[30px]">
-                <h2 className="text-[10px] font-[200]  ">Overview</h2>
-                <p className="text-sm text-gray-600 font-roboto">
+                <h2 className="text-[10px] font-[200] text-start ">Overview</h2>
+                <p className="text-sm text-gray-600 font-roboto text-start">
                   Amangalla is a luxurious and historic hotel located within the
                   UNESCO World Heritage-listed Galle Fort in southern Sri Lanka.
                   This hotel is part of the renowned Aman Resorts group and is
@@ -130,7 +128,7 @@ function PrimaryCard({ isPrimaryCard, data }: Props) {
               <div className="h-[1px] mt-[20px] w-full bg-gray-100 mb-[15px]" />
 
               {/*Reviews  */}
-              <h2 className="text-[10px] font-[200] ">Rating & Reviews</h2>
+              <h2 className="text-[10px] font-[200] text-start ">Rating & Reviews</h2>
               <div className="flex flex-row gap-2 items-center mb-[25px]">
                 <IoIosStar className="text-yellow-400" />{" "}
                 <p className="font-roboto font-[400]">4.5 rating</p>
@@ -151,7 +149,7 @@ function PrimaryCard({ isPrimaryCard, data }: Props) {
                   </div>
                 </div>
 
-                <p className="w-[90%] text-gray-600 text-sm p-3 font-roboto">
+                <p className="w-[100%] text-gray-600 md:text-sm text-[12px] p-3 font-roboto text-start">
                   'This approach will give you a smooth, scrollable container
                   without the visual clutter of a default scrollbar. You can
                   still scroll using the mouse wheel, trackpad, or touch'
