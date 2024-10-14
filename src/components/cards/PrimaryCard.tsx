@@ -4,6 +4,15 @@ import { IoIosStar } from "react-icons/io";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { GetPlaceDetails } from "@/lib/GloabalAPI";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 
 
@@ -45,6 +54,8 @@ function PrimaryCard({ isPrimaryCard,data}: Props) {
 
 
   return (
+    <Sheet>
+      <SheetTrigger>
     <div className="w-full md:w-[270px]">
       {/* image */}
       <div
@@ -87,6 +98,67 @@ function PrimaryCard({ isPrimaryCard,data}: Props) {
       </div>)}
 
     </div>
+    </SheetTrigger>
+    <SheetContent className="overflow-y-scroll h-full no-scrollbar">
+    <SheetHeader>
+      <img src="https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc=" className="w-[100%] h-[260px] mt-[30px] rounded-md" />
+
+      <div className="mt-[30px]">
+
+        {/* title and rating */}
+        <div className="mt-[20px]">
+          <h2 className="font-anton text-2xl w-[90%]">Crabing Factory</h2>
+          <div className="flex flex-row gap-2 items-center">
+          <IoIosStar className="text-yellow-400" />  <p className="font-roboto font-[400]">4.5 rating</p>
+          </div>
+
+          {/* overview */}
+
+          <div className="mt-[30px]">
+            <h2 className="text-[10px] font-[200]  ">Overview</h2>
+            <p className="text-sm text-gray-600 font-roboto">Amangalla is a luxurious and historic hotel located within the UNESCO World Heritage-listed Galle Fort in southern Sri Lanka. This hotel is part of the renowned Aman Resorts group and is known for its colonial charm, elegant interiors, and top-tier service. Here’s an overview of what makes Amangalla stand out:</p>
+          </div>
+
+
+          {/* maps */}
+
+          <div className="w-full h-[200px] bg-gray-300 mt-[20px] rounded-md">
+
+          </div>
+
+          {/* bar */}
+
+          <div  className="h-[1px] mt-[20px] w-full bg-gray-100 mb-[15px]"/>
+
+          {/*Reviews  */}
+
+          <h2 className="text-[10px] font-[200] ">Rating & Reviews</h2>
+          <div className="flex flex-row gap-2 items-center mb-[25px]">
+          <IoIosStar className="text-yellow-400" />  <p className="font-roboto font-[400]">4.5 rating</p>
+          </div>
+
+          {/* review card */}
+          <div className="w-full border border-1 mt-[10px] rounded-md ">
+            <div className="p-2 flex flex-row items-center">
+              <img src="https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc=" className="size-[40px] rounded-full "/>
+              <div className="ml-3">
+                <p className="text-[11px] text-gray-400">software engineer</p>
+                <p className="mt-[-3px] font-roboto">name name</p>
+              </div>
+            </div>
+
+            <p className="w-[90%] text-gray-600 text-sm p-3 font-roboto">
+                'This approach will give you a smooth, scrollable container without the visual clutter of a default scrollbar. You can still scroll using the mouse wheel, trackpad, or touch'
+              </p>
+          </div>
+
+
+        </div>
+
+      </div>
+    </SheetHeader>
+  </SheetContent>
+    </Sheet>
   );
 }
 
