@@ -17,7 +17,7 @@ import { Timeline } from "@/components/ui/timeline";
 import { CiClock2 } from "react-icons/ci";
 import Map from "@/lib/map";
 import axios from 'axios';
-import { GetPlaceDetails } from "@/lib/GloabalAPI";
+import { GetPlaceDetails, GetPlaceInfo } from "@/lib/GloabalAPI";
 import { Skeleton } from "@/components/ui/skeleton"
 import { SkeletonImage,SkeletonRow,SkeletonCard} from "@/components/skelton";
 import PrimaryCard from "@/components/cards/PrimaryCard";
@@ -31,6 +31,9 @@ const Trips = () => {
   const [data, setData] = useState<any>([]);
   const [imgaeURL,setImageURL] = useState<string>()
   const [imageLoading,setImageLoaing] =  useState(false)
+  const [place_ID,setPlace_ID] = useState<string>("")
+
+  console.log("placeId",place_ID)
 
   const writes = [
     {
@@ -41,7 +44,6 @@ const Trips = () => {
     }
   ]
 
-  console.log("imageLoading",imageLoading)
 
   const onGetInfo = async () => {
     setLoading(true);
@@ -49,7 +51,6 @@ const Trips = () => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
       setData(docSnap.data());
       setLoading(false);
     } else {
@@ -70,15 +71,23 @@ const Trips = () => {
 
 
     GetPlaceDetails(data?.entries?.placeData?.label).then(res => {
-      console.log("respose",res.data?.result?.results[0])
+      setPlace_ID(res.data?.result?.results[0]?.place_id)
       const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&maxheight=800&photo_reference=${res.data?.result?.results[0]?.photos[0]?.photo_reference}&key=AIzaSyALeWJ7fL9Cu7DCm9mxmMJcIVGELjohwBc`
-      console.log("photoUrl",photoUrl)
       setImageURL(photoUrl)
       setImageLoaing(false)
     })
   }
 
-  
+
+  const OnGetPlaceInfo = () => {
+    GetPlaceInfo(place_ID)
+        .then(res => {
+            console.log("response data", res?.data?.result);
+        })
+        .catch(err => {
+            console.error("Error fetching place info", err);
+        });
+      }
 
   useEffect(() => {
     onGetInfo()

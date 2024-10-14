@@ -3,7 +3,7 @@ import { CiHeart } from "react-icons/ci";
 import { IoIosStar } from "react-icons/io";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useEffect, useState } from "react";
-import { GetPlaceDetails } from "@/lib/GloabalAPI";
+import { GetPlaceDetails,GetPlaceInfo } from "@/lib/GloabalAPI";
 import {
   Sheet,
   SheetContent,
@@ -13,6 +13,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+import Image from 'next/image'
+
 
 type Props = {
   isPrimaryCard?: Boolean;
@@ -22,6 +32,8 @@ type Props = {
 function PrimaryCard({ isPrimaryCard, data }: Props) {
   const [imageURL, setImageURL] = useState<string>();
   const [imageLoading, setImageLoaing] = useState(false);
+  const [place_ID,setPlace_ID] = useState<string>("")
+  const [placeInfo,setPlaceInfo] = useState([])
 
   const onGetImage = () => {
     if (!data?.placeName || data?.placeName == "undefined") {
@@ -32,17 +44,34 @@ function PrimaryCard({ isPrimaryCard, data }: Props) {
     setImageLoaing(true);
 
     GetPlaceDetails(data?.placeName).then((res) => {
-      console.log("respose", res.data?.result?.results[0]);
       const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&maxheight=800&photo_reference=${res.data?.result?.results[0]?.photos[0]?.photo_reference}&key=AIzaSyALeWJ7fL9Cu7DCm9mxmMJcIVGELjohwBc`;
       console.log("photoUrl", photoUrl);
       setImageURL(photoUrl);
       setImageLoaing(false);
+      setPlace_ID(res.data?.result?.results[0]?.place_id)
     });
   };
 
+
+
+  const OnGetPlaceInfo = () => {
+    GetPlaceInfo(place_ID)
+        .then(res => {
+            console.log("response data comes", res?.data?.result);
+            setPlaceInfo(res?.data?.result?.result)
+        })
+        .catch(err => {
+            console.error("Error fetching place info", err);
+        });
+      }
+
+
+  console.log(placeInfo?.formatted_address)
+
   useEffect(() => {
     data && onGetImage();
-  }, [data?.placeName]);
+    place_ID && OnGetPlaceInfo()
+  }, [data?.placeName,place_ID]);
 
   return (
     <Sheet>
@@ -55,6 +84,11 @@ function PrimaryCard({ isPrimaryCard, data }: Props) {
               backgroundImage: `url('${imageURL}')`,
             }}
           >
+
+          <img 
+          src={imageURL}
+          className="w-full md:w-[270] h-[220px] hover:opacity-90 bg-gray-100   rounded-md"
+          />
             {/* header */}
             {isPrimaryCard && (
               <div className="w-full  mt-[20px] pt-[5px] flex flex-row items-end justify-end">
@@ -93,33 +127,71 @@ function PrimaryCard({ isPrimaryCard, data }: Props) {
           )}
         </div>
       </SheetTrigger>
+
       <SheetContent className="overflow-y-scroll h-full no-scrollbar w-[98vw] md:w-[600px] lg:w-[800px]">
-        <SheetHeader>
-          <img
-            src="https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc="
+
+      <Carousel>
+      <CarouselContent>
+        {
+          placeInfo?.photos?.map((item,index) => (
+            <CarouselItem key={index}>
+              <img
+            src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&maxheight=800&photo_reference=${item?.photo_reference}&key=AIzaSyALeWJ7fL9Cu7DCm9mxmMJcIVGELjohwBc`}
             className="w-[100%] h-[260px] mt-[30px] rounded-md"
           />
+            </CarouselItem>
+          ))
+        }
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>
+
+
+          
+
+        <SheetHeader>
 
           <div className="mt-[30px]">
             {/* title and rating */}
             <div className="mt-[20px]">
-              <h2 className="font-anton text-2xl w-[90%] text-start">Crabing Factory</h2>
+              <h2 className="font-anton text-2xl w-[90%] text-start">{placeInfo?.name	}</h2>
               <div className="flex flex-row gap-2 items-center">
                 <IoIosStar className="text-yellow-400" />{" "}
-                <p className="font-roboto font-[400] text-start">4.5 rating</p>
+                <p className="font-roboto font-[400] text-start">{placeInfo?.rating} rating</p>
               </div>
 
+              {/* open */}
+              <p className={`${placeInfo?.current_opening_hours?.open_now ? "bg-green-600" : "bg-red-600"} font-roboto font-[400] text-start inline-block text-white px-3 rounded-full mt-[10px]`}>{placeInfo?.current_opening_hours?.open_now ? "open" : "close"	} now</p>
+
+              
+              {/* types */}
+
+              {/* <div className="grid grid-cols-2 gap-1 mt-[10px]">
+              {
+                placeInfo?.types?.map((item) => (
+                  <Badge
+              variant="secondary"
+              className="text-sm text-gray-700 text-roboto font-[300] "
+            >
+              {item}
+            </Badge>
+
+                ))
+              }
+
+              </div> */}
               {/* overview */}
-              <div className="mt-[30px]">
+              {
+                placeInfo?.editorial_summary?.overview	 && (
+                <div className="mt-[30px]">
                 <h2 className="text-[10px] font-[200] text-start ">Overview</h2>
                 <p className="text-sm text-gray-600 font-roboto text-start">
-                  Amangalla is a luxurious and historic hotel located within the
-                  UNESCO World Heritage-listed Galle Fort in southern Sri Lanka.
-                  This hotel is part of the renowned Aman Resorts group and is
-                  known for its colonial charm, elegant interiors, and top-tier
-                  service. Here’s an overview of what makes Amangalla stand out:
+                  {placeInfo?.editorial_summary?.overview}
                 </p>
-              </div>
+              </div> )
+              
+            }
 
               {/* maps */}
               <div className="w-full h-[200px] bg-gray-300 mt-[20px] rounded-md"></div>
@@ -131,30 +203,43 @@ function PrimaryCard({ isPrimaryCard, data }: Props) {
               <h2 className="text-[10px] font-[200] text-start ">Rating & Reviews</h2>
               <div className="flex flex-row gap-2 items-center mb-[25px]">
                 <IoIosStar className="text-yellow-400" />{" "}
-                <p className="font-roboto font-[400]">4.5 rating</p>
+                <p className="font-roboto font-[400]">{placeInfo?.rating} rating and reviews</p>
               </div>
 
               {/* review card */}
-              <div className="w-full border border-1 mt-[10px] rounded-md ">
+
+              <div className="flex flex-col items-center w-full">
+
+              {
+                placeInfo?.reviews?.map((item,index) => (
+                  <div key={index} className="w-full border border-1 mt-[10px] rounded-md ">
                 <div className="p-2 flex flex-row items-center">
-                  <img
-                    src="https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc="
+                  <Image
+                    src={`${item.profile_photo_url ? item.profile_photo_url : "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png"}`}
                     className="size-[40px] rounded-full "
+                    alt={"user"}
+                    width={40}
+                    height={40}
                   />
                   <div className="ml-3">
                     <p className="text-[11px] text-gray-400">
-                      software engineer
+                      {item?.relative_time_description	}
                     </p>
-                    <p className="mt-[-3px] font-roboto">name name</p>
+                    <p className="mt-[-3px] font-roboto">{item?.author_name	}</p>
                   </div>
                 </div>
 
                 <p className="w-[100%] text-gray-600 md:text-sm text-[12px] p-3 font-roboto text-start">
-                  'This approach will give you a smooth, scrollable container
-                  without the visual clutter of a default scrollbar. You can
-                  still scroll using the mouse wheel, trackpad, or touch'
+                 {
+                  item?.text	
+                 }
                 </p>
               </div>
+                ))
+              }
+
+              </div>
+              
             </div>
           </div>
         </SheetHeader>

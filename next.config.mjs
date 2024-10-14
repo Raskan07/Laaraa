@@ -8,7 +8,14 @@ const nextConfig = {
           {
             protocol: 'https',
             hostname: 'maps.googleapis.com',
-            pathname: '/maps/api/place/photo',
+          },
+          {
+            protocol: 'https',
+            hostname: 'lh3.googleusercontent.com',
+          },
+          {
+            protocol: 'https',
+            hostname: 'w7.pngwing.com',
           },
         ],
       },
