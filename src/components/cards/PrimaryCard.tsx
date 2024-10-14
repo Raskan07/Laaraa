@@ -95,8 +95,7 @@ function PrimaryCard({ isPrimaryCard, data }: Props) {
           )}
         </div>
       </SheetTrigger>
-      <SheetContent className="overflow-y-scroll h-full no-scrollbar w-[90vw] md:w-[600px] lg:w-[800px]">
-        {/* Responsiveness handled with Tailwind breakpoints */}
+      <SheetContent className="overflow-y-scroll h-full no-scrollbar w-[98vw] md:w-[600px] lg:w-[800px]">
         <SheetHeader>
           <img
             src="https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc="
