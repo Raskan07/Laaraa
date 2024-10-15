@@ -93,10 +93,7 @@ export const InfiniteMovingCards = ({
                 "w-[240px] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-500 px-4 py-4 md:w-[350px] md:px-8 md:py-6", // Adjust card width and padding for mobile
                 "md:gap-4" // Adjust gap for mobile
               )}
-              style={{
-                background:
-                  "linear-gradient(180deg, var(--slate-800), var(--slate-900)",
-              }}
+              style={{ background: "rgb(255, 255, 255)" }}
               key={item.name}
             >
               <blockquote>
