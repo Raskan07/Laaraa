@@ -22,6 +22,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import Image from 'next/image'
+import CustomMap from "../ui/map";
 
 
 type Props = {
@@ -184,7 +185,7 @@ function PrimaryCard({ isPrimaryCard, data }: Props) {
               {/* overview */}
               {
                 placeInfo?.editorial_summary?.overview	 && (
-                <div className="mt-[30px]">
+                <div className="mt-[30px] mb-[20px]">
                 <h2 className="text-[10px] font-[200] text-start ">Overview</h2>
                 <p className="text-sm text-gray-600 font-roboto text-start">
                   {placeInfo?.editorial_summary?.overview}
@@ -194,7 +195,7 @@ function PrimaryCard({ isPrimaryCard, data }: Props) {
             }
 
               {/* maps */}
-              <div className="w-full h-[200px] bg-gray-300 mt-[20px] rounded-md"></div>
+              <CustomMap lat={placeInfo?.geometry?.location?.lat} lan={placeInfo?.geometry?.location?.lng} />
 
               {/* bar */}
               <div className="h-[1px] mt-[20px] w-full bg-gray-100 mb-[15px]" />
