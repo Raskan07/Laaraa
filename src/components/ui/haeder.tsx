@@ -46,7 +46,7 @@ function Header() {
   return (
     <div className="flex flex-row items-center justify-between py-[30px]">
       <div className="flex flex-row bg-red-300 items-center ">
-        <img src="/logo1.png" alt="logo" className="w-[120px] h-[40px]" onClick={() => router.push("/")} />
+        <img src="/logo1.png" alt="logo" className="w-[120px] h-[40px] cursor-pointer" onClick={() => router.push("/")} />
       </div>
       <div className="flex flex-row gap-3">
         <Button
@@ -72,7 +72,9 @@ function Header() {
           <DropdownMenuLabel className="px-4 py-2 font-semibold text-gray-700">My Account</DropdownMenuLabel>
           <DropdownMenuSeparator className="my-1 border-gray-300" />
           <DropdownMenuItem className="px-4 py-2 font-roboto hover:bg-gray-100 md:w-full cursor-pointer">
-            My Trips
+            <button onClick={() => router.push("/my/trips")}>
+              My Trips
+            </button>
           </DropdownMenuItem>
           <DropdownMenuItem className="px-4 py-2 font-roboto hover:bg-gray-100 md:w-full  cursor-pointer">
             Write a review
