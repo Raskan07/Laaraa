@@ -19,20 +19,34 @@ import {
 } from "@react-oauth/google";
 import { useAuthStore } from "../../../store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from 'next/navigation'
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 function Header() {
   // @ts-ignore
-  const { onGetData, userSignIn, isLogin, data ,onAuth_firebase} = useAuthStore();
+  const { onGetData, userSignIn, isLogin, data ,onAuth_firebase , signOut} = useAuthStore();
 
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => onGetData(tokenResponse),
   });
 
+    const router = useRouter()
+  
+
 
   return (
     <div className="flex flex-row items-center justify-between py-[30px]">
       <div className="flex flex-row bg-red-300 items-center ">
-        <img src="/logo1.png" alt="logo" className="w-[120px] h-[40px]" />
+        <img src="/logo1.png" alt="logo" className="w-[120px] h-[40px]" onClick={() => router.push("/")} />
       </div>
       <div className="flex flex-row gap-3">
         <Button
@@ -45,10 +59,42 @@ function Header() {
 
         {userSignIn ? (
           <div className="flex flex-col items-center">
-            <Avatar>
-              <AvatarImage src={data?.photoURL ? data?.photoURL : "/profile.jpg"} />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+ <Avatar>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage src={data?.photoURL ? data?.photoURL : "/profile.jpg"} />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          className="DropdownMenuContent bg-white rounded-lg shadow-lg py-2 w-[175px] flex flex-col items-start justify-start text-sm"
+          sideOffset={5}
+        >
+          <DropdownMenuLabel className="px-4 py-2 font-semibold text-gray-700">My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator className="my-1 border-gray-300" />
+          <DropdownMenuItem className="px-4 py-2 font-roboto hover:bg-gray-100 md:w-full cursor-pointer">
+            My Trips
+          </DropdownMenuItem>
+          <DropdownMenuItem className="px-4 py-2 font-roboto hover:bg-gray-100 md:w-full  cursor-pointer">
+            Write a review
+          </DropdownMenuItem>
+          <DropdownMenuItem className="px-4 py-2 hover:bg-gray-100 md:w-full  cursor-pointer">
+            Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem className="px-4 py-2 font-roboto hover:bg-gray-100 md:w-full  cursor-pointer">
+            Bookings
+          </DropdownMenuItem>
+          <DropdownMenuItem className="px-4 py-2 font-roboto hover:bg-gray-100 md:w-full  cursor-pointer">
+            Messages
+          </DropdownMenuItem>
+          <DropdownMenuItem className="px-4 py-2 font-roboto hover:bg-gray-100  md:w-full cursor-pointer">
+            Account info
+          </DropdownMenuItem>
+          <DropdownMenuItem className="px-4 py-2 font-roboto hover:bg-gray-100 md:w-full  cursor-pointer text-red-500">
+            <button onClick={() => signOut()}>Sign out</button>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </Avatar>
             {/* <p className="text-sm mt-[2px] text-nn text-gray-700">{data?.name}</p> */}
           </div>
         ) : (
