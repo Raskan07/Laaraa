@@ -3,10 +3,12 @@ import { IoLocationOutline,IoCalendarOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { GetPlaceDetails } from '@/lib/GloabalAPI';
 import { SkeletonMyTripsCard } from "../skelton";
+import { useRouter } from 'next/navigation'
 
 
 
-function MyTripCard({tripData}:any) {
+
+function MyTripCard({tripData,docId}:any) {
 
   const [imgaeURL,setImageURL] = useState<string>()
   const [imageLoading,setImageLoaing] =  useState(false)
@@ -40,6 +42,8 @@ function MyTripCard({tripData}:any) {
     onGetImage()
   },[place])
 
+  const router = useRouter()
+
 
   if(imageLoading){
     return (
@@ -53,7 +57,7 @@ function MyTripCard({tripData}:any) {
 
 
   return (
-    <div className="w-full flex md:flex-row flex-col items-center border border-1 rounded-md my-[15px]">
+    <div  onClick={() => router.push(`/trip-builder/${docId}`)} className="w-full cursor-pointer hover:opacity-90 flex md:flex-row flex-col items-center border border-1 rounded-md my-[15px]">
         {/* image */}
         <img src={imgaeURL} className="w-[100%] md:w-[300px] h-[160px] md:h-[200px] md:rounded-tl-lg md:rounded-bl-lg rounded-md" />
 

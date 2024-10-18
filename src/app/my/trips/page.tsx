@@ -12,6 +12,7 @@ function Trips() {
   // @ts-ignore
   const { auth_data } = useAuthStore();
   const [data, setData] = useState<any>([]);
+  const [docId,setDocId] = useState("")
 
   console.log("data", data);
 
@@ -22,7 +23,7 @@ function Trips() {
     const tripsArray: any[] = [];
     querySnapshot.forEach((doc) => {
       console.log("my Trips data", doc.id, " => ", doc.data());
-      tripsArray.push(doc.data()); // Push each document's data into the array
+      tripsArray.push({ ...doc.data(), docId: doc.id }); 
     });
     setData(tripsArray); // Update the state with the full array of trips
   };
@@ -50,7 +51,7 @@ function Trips() {
       {/* Trips Card */}
       <div className="w-full flex flex-col items-center">
         {data?.map((item, index) => (
-          <MyTripCard key={index} tripData={item} />
+          <MyTripCard key={index} tripData={item} docId={item.docId} />
         ))}
       </div>
     </div>
