@@ -11,28 +11,39 @@ import { useAuthStore } from "../../../../store";
 function Trips() {
   // @ts-ignore
   const { auth_data } = useAuthStore();
-  const [data, setData] = useState<any>([]);
-  const [docId,setDocId] = useState("")
-
-  console.log("data", data);
-
-  const q = query(collection(db, "AI_Trips"), where("auth.email", "==", auth_data?.email));
-
-  const GetTrips = async () => {
-    const querySnapshot = await getDocs(q);
-    const tripsArray: any[] = [];
-    querySnapshot.forEach((doc) => {
-      console.log("my Trips data", doc.id, " => ", doc.data());
-      tripsArray.push({ ...doc.data(), docId: doc.id }); 
-    });
-    setData(tripsArray); // Update the state with the full array of trips
-  };
+  const [data, setData] = useState<any[]>([]);
+  const [docId, setDocId] = useState("");
 
   const router = useRouter();
 
+  const GetTrips = async () => {
+    // Check if auth_data and auth_data.email exist
+    if (!auth_data || !auth_data.email) {
+      console.error("auth_data is not available");
+      return; // Exit early if there's no auth data
+    }
+
+    const q = query(
+      collection(db, "AI_Trips"),
+      where("auth.email", "==", auth_data?.email)
+    );
+
+    try {
+      const querySnapshot = await getDocs(q);
+      const tripsArray: any[] = [];
+      querySnapshot.forEach((doc) => {
+        console.log("my Trips data", doc.id, " => ", doc.data());
+        tripsArray.push({ ...doc.data(), docId: doc.id });
+      });
+      setData(tripsArray); // Update the state with the full array of trips
+    } catch (error) {
+      console.error("Error fetching trips:", error);
+    }
+  };
+
   useEffect(() => {
     GetTrips();
-  }, []);
+  }, [auth_data]); // Make sure this runs when auth_data changes
 
   return (
     <div className="">
