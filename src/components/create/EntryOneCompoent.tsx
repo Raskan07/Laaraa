@@ -40,7 +40,7 @@ function EntryOneCompoent() {
         Search or get inspired by popular destination
       </P_Normal>
       <div  className='h-[50px]'/>
-      <div className="flex flex-row items-center md:w-[75%] border border-1 px-4 py-3 rounded-full">
+      <div className="flex flex-row items-center md:w-[75%] w-full  border border-1 px-4 py-3 rounded-full">
         <IoIosSearch  className="text-[20px] text-gray-700 "/>
         <GooglePlacesAutocomplete
           apiKey="AIzaSyALeWJ7fL9Cu7DCm9mxmMJcIVGELjohwBc"

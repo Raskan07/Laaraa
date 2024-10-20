@@ -56,6 +56,7 @@ function Interest() {
         "Caves and caverns",
         "Forests and jungles",
         "Waterfalls",
+        "rivers"
       ],
     },
     {
@@ -80,6 +81,7 @@ function Interest() {
         "Street food tours",
         "Nightlife",
         "Architecture",
+        "Shopping malls",
       ],
     },
     {
@@ -90,6 +92,7 @@ function Interest() {
         "Cooking classes",
         "Wine tasting tours",
         "Street food and night markets",
+        "locals Foods",
       ],
     },
     {
@@ -127,6 +130,10 @@ function Interest() {
       items: ["Spa retreats", "Hot springs", "Yoga and meditation retreats"],
     },
     {
+      category: "Hidden Gems",
+      items: ["Hidden Gems", "Must See Attraction", "Art Galleries","Outdoors"],
+    },
+    {
       category: "Art and Entertainment",
       items: [
         "Theater and opera",
@@ -148,28 +155,28 @@ function Interest() {
 
   const loadingStates = [
     {
-      text: "Buying a condo",
+      text: "Testing",
     },
     {
-      text: "Travelling in a flight",
+      text: "Creating Laaraa AI Plan",
     },
     {
-      text: "Meeting Tyler Durden",
+      text: "Meeting Requirements",
     },
     {
-      text: "He makes soap",
+      text: "Fiding The Best Places",
     },
     {
-      text: "We goto a bar",
+      text: "Arragnes Best Trip for You",
     },
     {
-      text: "Start a fight",
+      text: "Location Tracking",
     },
     {
-      text: "We like it",
+      text: "Allmost Done",
     },
     {
-      text: "Welcome to F**** C***",
+      text: "Enjoy Your Day!",
     },
   ];
 
@@ -256,14 +263,14 @@ trip_plan:[],weather:[]`;
     setUploadLoading(true);
     try {
       await setDoc(doc(db, "AI_Trips", docId), {
-        auth: auth_data,
-        ai_generates: data,
+        auth: auth_data || "NA",
+        ai_generates: data || "NA",
         entries: {
-          trip_start_date: startDate,
-          trip_end_date: endDate,
-          placeData: value,
-          interests: interests,
-          tripType: tripType,
+          trip_start_date: startDate || "NA",
+          trip_end_date: endDate || "NA",
+          placeData: value || "NA",
+          interests: interests || "NA",
+          tripType: tripType || "NA",
         },
       });
       router.push(`/trip-builder/${docId}`);

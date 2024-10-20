@@ -50,7 +50,7 @@ function EntryTwoComponent() {
         }}
       />
 
-      <div className="w-full flex flex-row items-end  justify-end mt-[15px] mb-[20px]">
+      <div className="w-full flex flex-row items-end  justify-end mt-[15px] mb-[20px] p-5 md:p-0">
         <Button onClick={onHandleRoute} className="px-10 py-[20px] rounded-full" disabled={!date}>
           Next
         </Button>

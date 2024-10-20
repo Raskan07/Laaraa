@@ -7,31 +7,31 @@ function TravelList() {
           id: "1",
           place: "Taj Mahal",
           city: "Agra, India",
-          imgUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/2d/1d/0f/img-20161230-041500-366.jpg?w=300&h=300&s=1",
+          imgUrl: "https://www.travelandleisure.com/thmb/wdUcyBQyQ0wUVs4wLahp0iWgZhc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/taj-mahal-agra-india-TAJ0217-9eab8f20d11d4391901867ed1ce222b8.jpg",
         },
         {
           id: "2",
           place: "Eiffel Tower",
           city: "Paris, France",
-          imgUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/2d/1d/0f/img-20161230-041500-366.jpg?w=300&h=300&s=1",
+          imgUrl: "https://www.travelandleisure.com/thmb/SPUPzO88ZXq6P4Sm4mC5Xuinoik=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/eiffel-tower-paris-france-EIFFEL0217-6ccc3553e98946f18c893018d5b42bde.jpg",
         },
         {
           id: "3",
           place: "Colosseum",
           city: "Rome, Italy",
-          imgUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/2d/1d/0f/img-20161230-041500-366.jpg?w=300&h=300&s=1",
+          imgUrl: "https://cdn.mos.cms.futurecdn.net/BiNbcY5fXy9Lra47jqHKGK.jpg",
         },
         {
           id: "4",
           place: "Great Wall of China",
           city: "Beijing, China",
-          imgUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/2d/1d/0f/img-20161230-041500-366.jpg?w=300&h=300&s=1",
+          imgUrl: "https://parametric-architecture.com/wp-content/uploads/2024/08/Great-Wall-of-China-Puk-Khantho.webp",
         },
         {
           id: "5",
           place: "Machu Picchu",
           city: "Cusco, Peru",
-          imgUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/2d/1d/0f/img-20161230-041500-366.jpg?w=300&h=300&s=1",
+          imgUrl: "https://www.peru.travel/contenido/atractivo/imagen/en/172/1.1/principal/machu-picchu.jpg",
         },
       ];
   return (

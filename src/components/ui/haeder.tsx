@@ -100,6 +100,7 @@ function Header() {
             {/* <p className="text-sm mt-[2px] text-nn text-gray-700">{data?.name}</p> */}
           </div>
         ) : (
+          <div className="w-full flex flex-col items-center">
           <Dialog>
             <DialogTrigger asChild>
               <Button
@@ -109,7 +110,7 @@ function Header() {
                 Sign in
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]  w-[90%] rounded-md">
+            <DialogContent className="md:max-w-[425px]  w-[90%] rounded-md">
               <div className="flex flex-col items-center justify-center">
                 {/* logo */}
                 <div className="flex flex-row items-center justify-start ">
@@ -133,6 +134,7 @@ function Header() {
               </div>
             </DialogContent>
           </Dialog>
+          </div>
         )}
       </div>
     </div>
