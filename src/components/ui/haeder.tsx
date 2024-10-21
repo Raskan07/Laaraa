@@ -33,7 +33,9 @@ import {
 
 function Header() {
   // @ts-ignore
-  const { onGetData, userSignIn, isLogin, data ,onAuth_firebase , signOut} = useAuthStore();
+  const { onGetData, userSignIn, isLogin, data  ,onAuth_firebase , signOut} = useAuthStore();
+
+  console.log("auth Data", )
 
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => onGetData(tokenResponse),
